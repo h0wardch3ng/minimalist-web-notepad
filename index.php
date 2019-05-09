@@ -1,7 +1,10 @@
 <?php
 
 // Base URL of the website, without trailing slash.
-$base_url = 'https://notes.orga.cat';
+//$base_url = 'https://notes.orga.cat';
+
+// relative path
+$base_url = '';
 
 // Disable caching.
 header('Cache-Control: no-cache, no-store, must-revalidate');
@@ -34,6 +37,13 @@ if (isset($_POST['text'])) {
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'curl') === 0) {
     if (is_file($path)) {
         print file_get_contents($path);
+    }
+    die;
+}
+// Output base64 encoded text
+if (isset($_GET["B"])) {
+    if (is_file($path)) {
+        print base64_encode(file_get_contents($path));
     }
     die;
 }

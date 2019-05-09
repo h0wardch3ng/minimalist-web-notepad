@@ -37,6 +37,23 @@ location ~* ^/notes/([a-zA-Z0-9_-]+)$ {
 }
 ```
 
+### On Caddy
+
+```
+my.notepad.domain {
+  root /srv/notepad
+  gzip
+  rewrite /B {
+    regexp ^/([a-zA-Z0-9_-]+)$
+    to     /index.php?B=1&note={1}
+  }
+  rewrite / {
+    regexp ^/([a-zA-Z0-9_-]+)$
+    to     /index.php?note={1}
+  }
+  fastcgi / 127.0.0.1:9001 php
+}
+```
 
 Copyright and license
 ---------------------
