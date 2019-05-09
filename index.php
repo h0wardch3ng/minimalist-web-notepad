@@ -43,6 +43,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'curl') === 0) {
 // Output base64 encoded text
 if (isset($_GET["B"])) {
     if (is_file($path)) {
+        header('Content-type: text/txt');
         print base64_encode(file_get_contents($path));
     }
     die;
