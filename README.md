@@ -43,9 +43,10 @@ location ~* ^/notes/([a-zA-Z0-9_-]+)$ {
 my.notepad.domain {
   root /srv/notepad
   gzip
+  status 403 /_tmp
   rewrite /B {
     regexp ^/([a-zA-Z0-9_-]+)$
-    to     /index.php?B=1&note={1}
+    to     /index.php?encode=base64&note={1}
   }
   rewrite / {
     regexp ^/([a-zA-Z0-9_-]+)$

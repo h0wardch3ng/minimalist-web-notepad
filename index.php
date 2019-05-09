@@ -40,11 +40,21 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'curl') === 0) {
     }
     die;
 }
-// Output base64 encoded text
-if (isset($_GET["B"])) {
+// Output encoded(plain) text
+if (isset($_GET["encode"])) {
     if (is_file($path)) {
         header('Content-type: text/txt');
-        print base64_encode(file_get_contents($path));
+        switch($_GET["encode"]) {
+            case "base64":
+                print base64_encode(file_get_contents($path));
+                break;
+            case "plain":
+                print file_get_contents($path);
+                break;
+            default:
+                print file_get_contents($path);
+                break;
+        }
     }
     die;
 }
