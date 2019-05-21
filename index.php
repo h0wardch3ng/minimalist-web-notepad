@@ -40,7 +40,7 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'curl') === 0) {
     }
     die;
 }
-// Output encoded(plain) text
+// text mode
 if (isset($_GET["mode"])) {
     if (is_file($path)) {
         header('Content-type: text/txt');

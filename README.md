@@ -48,6 +48,12 @@ my.notepad.domain {
     regexp ^/([a-zA-Z0-9_-]+)$
     to     /index.php?note={1}&{query}
   }
+
+  # optional
+  rewrite /B {
+    regexp ^/([a-zA-Z0-9_-]+)$
+    to     /index.php?note={1}&mode=base64&{query}
+  }
   fastcgi / 127.0.0.1:9001 php
 }
 ```
