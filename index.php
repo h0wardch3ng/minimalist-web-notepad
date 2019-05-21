@@ -69,6 +69,10 @@ if (isset($_GET["encode"])) {
     <link rel="stylesheet" href="<?php print $base_url; ?>/styles.css">
 </head>
 <body>
+    <div class="nav">
+        <a href="B/<?php print $_GET['note']; ?>">Base64</a>
+        <a href="P/<?php print $_GET['note']; ?>">Plain</a>
+    </div>
     <div class="container">
         <textarea id="content"><?php
             if (is_file($path)) {
