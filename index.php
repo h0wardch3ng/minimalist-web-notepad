@@ -22,9 +22,13 @@ if (!isset($_GET['note']) || !preg_match('/^[a-zA-Z0-9_-]+$/', $_GET['note'])) {
 $path = '_tmp/' . $_GET['note'];
 
 if (isset($_POST['text'])) {
+    if (isset($_REQUEST["mode"]) && $_REQUEST["mode"] == "append") {
+        file_put_contents($path, $_POST['text'], LOCK_EX | FILE_APPEND);
+        die();
+    }
 
     // Update file.
-    file_put_contents($path, $_POST['text']);
+    file_put_contents($path, $_POST['text'], LOCK_EX);
 
     // If provided input is empty, delete file.
     if (!strlen($_POST['text'])) {
