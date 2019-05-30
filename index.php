@@ -47,7 +47,27 @@ if (strpos($_SERVER['HTTP_USER_AGENT'], 'curl') === 0) {
 // text mode
 if (isset($_GET["mode"])) {
     if (is_file($path)) {
-        header('Content-type: text/txt');
+        if (isset($_GET["type"])) {
+            switch($_GET["type"]) {
+                case "html":
+                    header('Content-type: text/html');
+                    break;
+                case "css":
+                    header('Content-type: text/css');
+                    break;
+                case "js":
+                    header('Content-type: text/javascript');
+                    break;
+                case "json":
+                    header('Content-type: application/json');
+                    break;
+                default:
+                    header('Content-type: text/txt');
+            }
+        } else {
+            header('Content-type: text/plain');
+        }
+
         switch($_GET["mode"]) {
             case "base64":
                 print base64_encode(file_get_contents($path));
