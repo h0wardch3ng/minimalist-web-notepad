@@ -104,6 +104,9 @@ if (isset($_GET["mode"])) {
         <a href="<?php print $_GET['note']; ?>?mode=base64">Base64</a>
         <a href="<?php print $_GET['note']; ?>?mode=md5">MD5</a>
         <a href="<?php print $_GET['note']; ?>?mode=mtime">Mtime</a>
+        <a href="<?php print $_GET['note']; ?>?mode=plain&type=html">Type:HTML</a>
+        <a href="<?php print $_GET['note']; ?>?mode=plain&type=css">Type:CSS</a>
+        <a href="<?php print $_GET['note']; ?>?mode=plain&type=javascript">Type:JS</a>
     </div>
     <div class="container">
         <textarea id="content"><?php
