@@ -12,27 +12,38 @@ header('Pragma: no-cache');
 header('Expires: 0');
 
 // If a note's name is not provided or contains invalid characters.
-if (!isset($_GET['note']) || !preg_match('/^[a-zA-Z0-9_-]+$/', $_GET['note'])) {
+if (!isset($_REQUEST['note']) || !preg_match('/^[a-zA-Z0-9_-]+$/', $_REQUEST['note'])) {
 
     // Generate a name with 5 random unambiguous characters. Redirect to it.
     header("Location: $base_url/" . substr(str_shuffle('234579abcdefghjkmnpqrstwxyz'), -5));
     die;
 }
 
-$path = '_tmp/' . $_GET['note'];
+$path = '_tmp/' . $_REQUEST['note'];
 
-if (isset($_POST['text'])) {
-    if (isset($_REQUEST["mode"]) && $_REQUEST["mode"] == "append") {
-        file_put_contents($path, $_POST['text'], LOCK_EX | FILE_APPEND);
-        die();
-    }
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
-    // Update file.
-    file_put_contents($path, $_POST['text'], LOCK_EX);
+    // Web action
+    if (isset($_POST['text'])) {
 
-    // If provided input is empty, delete file.
-    if (!strlen($_POST['text'])) {
-        unlink($path);
+        // Update file.
+        file_put_contents($path, $_POST['text'], LOCK_EX);
+
+        // If provided input is empty, delete file.
+        if (!strlen($_POST['text'])) {
+            unlink($path);
+        }
+
+    // API action
+    } else {
+        // used to POST any raw data, usually from cli.
+        // eg>  dmesg | curl -d @- http://mininopad.url/dmesg
+        // eg>  dmesg | curl -d @- http://mininopad.url/dmesg?mode=append
+        if (isset($_REQUEST["mode"]) && $_REQUEST["mode"] == "append") {
+            file_put_contents($path, file_get_contents("php://input"), LOCK_EX | FILE_APPEND);
+        } else {
+            file_put_contents($path, file_get_contents("php://input"), LOCK_EX);
+        }
     }
     die;
 }
