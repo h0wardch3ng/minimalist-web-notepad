@@ -1,10 +1,17 @@
-Minimalist Web Notepad
+Minimalist Web Notepad Developers Mod
 ======================
 
-This is an open source clone of notepad.cc, which is now defunct.
+This mod adds few features useful to developers.
 
-See demo at https://notes.orga.cat or https://notes.orga.cat/whatever.
+ * multiple output modes: plain/base64/md5/mtime
+ * multiple output mime:HTML/JS/CSS/JSON (can be embed as web source / stub source)
+ * easy to post content from cli (with append mode)
 
+Example: 
+```
+dmesg | curl -d @- http://mininopad.url/dmesg
+dmesg | curl -d @- http://mininopad.url/dmesg?mode=append
+``` 
 
 Installation
 ------------
