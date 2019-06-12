@@ -34,16 +34,13 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
             unlink($path);
         }
 
-    // API action
+    // CLI action (eg. from curl)
     } else {
-        // used to POST any raw data, usually from cli.
-        // eg>  dmesg | curl -d @- http://mininopad.url/dmesg
-        // eg>  dmesg | curl -d @- http://mininopad.url/dmesg?mode=append
-        if (isset($_REQUEST["mode"]) && $_REQUEST["mode"] == "append") {
-            file_put_contents($path, file_get_contents("php://input"), LOCK_EX | FILE_APPEND);
-        } else {
-            file_put_contents($path, file_get_contents("php://input"), LOCK_EX);
+        $filemode = LOCK_EX;
+        if (isset($_REQUEST["mode"]) && $_REQUEST["mode"] === "append") {
+            $filemode |= FILE_APPEND;
         }
+        file_put_contents($path, file_get_contents("php://input"), $filemode);
     }
     die;
 }

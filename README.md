@@ -9,8 +9,8 @@ This mod adds few features useful to developers.
 
 Example: 
 ```
-dmesg | curl -d @- http://mininopad.url/dmesg
-dmesg | curl -d @- http://mininopad.url/dmesg?mode=append
+dmesg | curl --data-binary @- http://mininopad.url/dmesg
+dmesg | curl --data-binary @- http://mininopad.url/dmesg?mode=append
 ``` 
 
 Installation
