@@ -21,6 +21,7 @@ if (!isset($_REQUEST['note']) || !preg_match('/^[a-zA-Z0-9_-]+$/', $_REQUEST['no
 
 $path = '_tmp/' . $_REQUEST['note'];
 
+// write to server
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
     // Web action
@@ -45,54 +46,48 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     die;
 }
 
+// text mode output
+if (is_file($path) && isset($_GET["mode"]) && $_GET["mode"] != "") {
+    switch($_GET["mode"]) {
+        case "base64":
+            print base64_encode(file_get_contents($path));
+            break;
+        case "plain":
+            print file_get_contents($path);
+            break;
+        case "md5":
+            print hash_file('md5', $path);
+            break;
+        case "mtime":
+            print filemtime($path);
+            break;
+        case "html":
+            header('Content-type: text/html');
+            print file_get_contents($path);
+            break;
+        case "css":
+            header('Content-type: text/css');
+            print file_get_contents($path);
+            break;
+        case "js":
+            header('Content-type: text/javascript');
+            print file_get_contents($path);
+            break;
+        case "json":
+            header('Content-type: application/json');
+            print file_get_contents($path);
+            break;
+        default:
+            print file_get_contents($path);
+            break;
+    }
+    die;
+}
+
 // Output raw file if client is curl.
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'curl') === 0) {
     if (is_file($path)) {
         print file_get_contents($path);
-    }
-    die;
-}
-// text mode
-if (isset($_GET["mode"])) {
-    if (is_file($path)) {
-        if (isset($_GET["type"])) {
-            switch($_GET["type"]) {
-                case "html":
-                    header('Content-type: text/html');
-                    break;
-                case "css":
-                    header('Content-type: text/css');
-                    break;
-                case "js":
-                    header('Content-type: text/javascript');
-                    break;
-                case "json":
-                    header('Content-type: application/json');
-                    break;
-                default:
-                    header('Content-type: text/txt');
-            }
-        } else {
-            header('Content-type: text/plain');
-        }
-
-        switch($_GET["mode"]) {
-            case "base64":
-                print base64_encode(file_get_contents($path));
-                break;
-            case "plain":
-                print file_get_contents($path);
-                break;
-            case "md5":
-                print hash_file('md5', $path);
-                break;
-            case "mtime":
-                print filemtime($path);
-                break;
-            default:
-                print file_get_contents($path);
-                break;
-        }
     }
     die;
 }
@@ -101,20 +96,20 @@ if (isset($_GET["mode"])) {
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="Minimalist Web Notepad (https://github.com/pereorga/minimalist-web-notepad)">
+    <meta name="generator" content="Minimalist Web Notepad Developers Mod">
     <title><?php print $_GET['note']; ?></title>
     <link rel="shortcut icon" href="<?php print $base_url; ?>/favicon.ico">
     <link rel="stylesheet" href="<?php print $base_url; ?>/styles.css">
 </head>
 <body>
     <div class="nav">
-        <a href="<?php print $_GET['note']; ?>?mode=plain">Plain</a>
-        <a href="<?php print $_GET['note']; ?>?mode=base64">Base64</a>
-        <a href="<?php print $_GET['note']; ?>?mode=md5">MD5</a>
-        <a href="<?php print $_GET['note']; ?>?mode=mtime">Mtime</a>
-        <a href="<?php print $_GET['note']; ?>?mode=plain&type=html">Type:HTML</a>
-        <a href="<?php print $_GET['note']; ?>?mode=plain&type=css">Type:CSS</a>
-        <a href="<?php print $_GET['note']; ?>?mode=plain&type=javascript">Type:JS</a>
+        <a href="<?php print $_GET['note']; ?>/plain">Plain</a>
+        <a href="<?php print $_GET['note']; ?>/base64">Base64</a>
+        <a href="<?php print $_GET['note']; ?>/md5">MD5</a>
+        <a href="<?php print $_GET['note']; ?>/mtime">Mtime</a>
+        <a href="<?php print $_GET['note']; ?>/html">Type:HTML</a>
+        <a href="<?php print $_GET['note']; ?>/css">Type:CSS</a>
+        <a href="<?php print $_GET['note']; ?>/js">Type:JS</a>
     </div>
     <div class="container">
         <textarea id="content"><?php

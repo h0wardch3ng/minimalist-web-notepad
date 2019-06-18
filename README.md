@@ -4,13 +4,28 @@ Minimalist Web Notepad Developers Mod
 This mod adds few features useful to developers.
 
  * multiple output modes: plain/base64/md5/mtime
- * multiple output mime:HTML/JS/CSS/JSON (can be embed as web source / stub source)
- * easy to post content from cli (with append mode)
+ * multiple output mime: html/js/css/json (embed as web source)
+ * post content from cli (with append mode)
 
 Example: 
 ```
+# upload data from cli
 dmesg | curl --data-binary @- http://mininopad.url/dmesg
-dmesg | curl --data-binary @- http://mininopad.url/dmesg?mode=append
+
+# append data from cli
+dmesg | curl --data-binary @- http://mininopad.url/dmesg/append
+
+# get plain text (curl user-agent)
+curl http://mininopad.url/dmesg
+
+# base64 encoded text
+curl http://mininopad.url/dmesg/base64
+
+# md5 hash of the text
+curl http://mininopad.url/dmesg/md5
+
+# view as html
+curl http://mininopad.url/dmesg/html
 ``` 
 
 Installation
@@ -33,14 +48,14 @@ To enable URL rewriting, put something like this in your configuration file:
 If notepad is in the root directory:
 ```
 location / {
-    rewrite ^/([a-zA-Z0-9_-]+)$ /index.php?note=$1?;
+    rewrite ^/([a-zA-Z0-9_-]+)/?([a-z0-9]*)?$ /index.php?note=$1&mode=$2?;
 }
 ```
 
 If notepad is in a subdirectory:
 ```
-location ~* ^/notes/([a-zA-Z0-9_-]+)$ {
-    try_files $uri /notes/index.php?note=$1?;
+location ~* ^/notes/([a-zA-Z0-9_-]+)/?([a-z0-9]*)?$ {
+    try_files $uri /notes/index.php?note=$1&mode=$2?;
 }
 ```
 
@@ -52,15 +67,10 @@ my.notepad.domain {
   gzip
   status 403 /_tmp
   rewrite / {
-    regexp ^/([a-zA-Z0-9_-]+)$
-    to     /index.php?note={1}&{query}
+    regexp ^/([a-zA-Z0-9_-]+)/?([a-z0-9]*)?$
+    to     /index.php?note={1}&mode={2}&{query}
   }
 
-  # optional
-  rewrite /B {
-    regexp ^/([a-zA-Z0-9_-]+)$
-    to     /index.php?note={1}&mode=base64&{query}
-  }
   fastcgi / 127.0.0.1:9001 php
 }
 ```
