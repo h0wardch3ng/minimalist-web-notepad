@@ -50,15 +50,19 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 if (is_file($path) && isset($_GET["mode"]) && $_GET["mode"] != "") {
     switch($_GET["mode"]) {
         case "base64":
+            header('Content-type: text/plain');
             print base64_encode(file_get_contents($path));
             break;
         case "plain":
+            header('Content-type: text/plain');
             print file_get_contents($path);
             break;
         case "md5":
+            header('Content-type: text/plain');
             print hash_file('md5', $path);
             break;
         case "mtime":
+            header('Content-type: text/plain');
             print filemtime($path);
             break;
         case "html":
