@@ -88,6 +88,11 @@ if (is_file($path) && isset($_GET["mode"]) && $_GET["mode"] != "") {
     die;
 }
 
+if (!is_file($path) && isset($_GET["mode"]) && $_GET["mode"] != "") {
+    header("Location: $base_url/" . $_REQUEST['note']);
+    die;
+}
+
 // Output raw file if client is curl.
 if (strpos($_SERVER['HTTP_USER_AGENT'], 'curl') === 0) {
     if (is_file($path)) {
