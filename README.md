@@ -75,6 +75,18 @@ my.notepad.domain {
 }
 ```
 
+Screenshots
+-----------
+
+![Chrome](https://orga.cat/sites/default/files/images/chrome.png)
+
+![Edge](https://orga.cat/sites/default/files/images/edge.png)
+
+![Chrome Android](https://orga.cat/sites/default/files/images/android_chrome_dark.png)
+
+![Firefox Android](https://orga.cat/sites/default/files/images/android_firefox.png)
+
+
 Copyright and license
 ---------------------
 
