@@ -11,6 +11,7 @@ body {
 .nav a {
     display: inline;
     margin-right: 10px;
+    color: grey;
 }
 .container {
     position: absolute;
