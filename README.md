@@ -59,20 +59,26 @@ location ~* ^/notes/([a-zA-Z0-9_-]+)/?([a-z0-9]*)?$ {
 }
 ```
 
-### On Caddy
+### On Caddy2
 
 ```
-my.notepad.domain {
-  root /srv/notepad
-  gzip
-  status 403 /_tmp
-  rewrite / {
-    regexp ^/([a-zA-Z0-9_-]+)/?([a-z0-9]*)?$
-    to     /index.php?note={1}&mode={2}&{query}
+https://mydomian.com {
+
+  root * /srv/notepad
+  encode gzip zstd
+
+  file_server {
+    hide /_tmp
   }
 
-  fastcgi / 127.0.0.1:9001 php
+  @npath {
+    path_regexp note ^/([a-zA-Z0-9_-]+)/?([a-z0-9]*)?$
+  }
+
+  rewrite @npath /index.php?note={http.regexp.note.1}&mode={http.regexp.note.2}&{query}
+  php_fastcgi 127.0.0.1:9000
 }
+
 ```
 
 Screenshots
